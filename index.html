@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flyinglimao's Website</title>
+    <script>
+        colorSet = ['red', 'lightblue', 'green', 'blue', 'pink', 'darkblue', 'yellow', 'purple', 'orange', 'darkred'];
+        var i = 0;
+        var q = 201;
+        setInterval(()=>{
+            document.querySelector('#colorful').style.color = colorSet[i++];
+            if(i > 10) {
+                i = 0;
+                document.querySelector('h1').style.fontSize = q++ + '%';
+            }
+        }, 100);
+    </script>
+</head>
+<body>
+    <h1>HELLO WORLD!</h1>
+    <p id="colorful">It's really a cool website, right?</p>
+    <p>Umm...</p>
+    <p>No, it isn't. :(</p>
+    <p>It just a stupid page, containing some useless text.</p>
+    <p>Who made this shitty thing? ...Oh, I did.</p>
+</body>
+</html>
