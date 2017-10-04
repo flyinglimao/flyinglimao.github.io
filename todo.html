@@ -206,6 +206,10 @@
                 }
             }
         }
+        function drop(eve) {
+            eve.preventDefault();
+            console.log(eve);
+        }
         function saveToFile() {
             let save = document.createElement('a');
             document.body.appendChild(save);
@@ -224,7 +228,7 @@
         }, false);
     </script>
 </head>
-<body onload="first()">
+<body onload="first(event)" ondrop="drop(event)" ondragover="event.preventDefault()">
     <main>
         <div class="createButton" onclick="newMission.style.display = 'block'">
             <span>+</span>
