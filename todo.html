@@ -216,6 +216,12 @@
             save.remove();
             URL.revokeObjectURL(fileBlob);
         }
+        document.addEventListener("keydown", function(eve) {
+            if (eve.keyCode === 83 && (navigator.platform.match("Mac") ? eve.metaKey : eve.ctrlKey)) {
+                eve.preventDefault();
+                saveToFile();
+            }
+        }, false);
     </script>
 </head>
 <body onload="first()">
