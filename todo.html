@@ -207,8 +207,28 @@
             }
         }
         function drop(eve) {
+            eve.stopPropagation();
             eve.preventDefault();
-            console.log(eve);
+            let reader = new FileReader();
+            reader.onload = function (event) {
+                if(confirm("你確定要載入文件嗎？這將會覆蓋掉舊有紀錄")) {
+                    let importing = event.target.result;
+                    try {
+                        let data = [];
+                        importing = JSON.parse(importing);
+                        importing.forEach((e) => {
+                            data.push(e);
+                        });
+                        localStorage.setItem('todolist', JSON.stringify(data));
+                        document.querySelectorAll('.mission').forEach((e)=>e.remove());
+                        first();
+                    } catch (err) {
+                        console.log(err);
+                        alert('載入失敗');
+                    }
+                }
+            }
+            reader.readAsText(eve.dataTransfer.files[0]);
         }
         function saveToFile() {
             let save = document.createElement('a');
@@ -228,7 +248,7 @@
         }, false);
     </script>
 </head>
-<body onload="first(event)" ondrop="drop(event)" ondragover="event.preventDefault()">
+<body onload="first(event)" ondrop="drop(event)" ondragover="event.preventDefault();event.stopPropagation();">
     <main>
         <div class="createButton" onclick="newMission.style.display = 'block'">
             <span>+</span>
