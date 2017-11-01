@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>迷轉址</title>
+	<script>
+		let fromAndGo = {
+			"ex0": "https://learnpythonthehardway.org/python3/ex0.html"
+		}
+		if (fromAndGo[location.hash.slice(1)]) {
+			location.href = fromAndGo[location.hash.slice(1)];
+		}
+	</script>
+</head>
+<body>
+	You shouldn't see this page. If you see this, you have a wrong url.
+</body>
+</html>

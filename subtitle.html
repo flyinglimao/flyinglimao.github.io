@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html, body{
+			background: #0000FF;
+		}
+		#subtitle {
+			font-size: 160%;
+			font-family: '微軟正黑體';
+			width: 20em;
+			position: absolute;
+			bottom: 0;
+			font-weight: bold;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<div id="subtitle"></div>
+	<script>
+		if (window.webkitSpeechRecognition) {
+			var all = "";
+			var reco = new webkitSpeechRecognition()
+			reco.continuous = true
+			reco.interimResults = true
+			reco.onend = () => {
+				reco.start()
+			}
+			reco.onresult = (result) => {
+				var tmp = result.results[result.resultIndex]
+				if (tmp.isFinal) {
+					all += '<br>' + tmp[0].transcript
+					document.getElementById('subtitle').innerHTML = all
+				} else {
+					document.getElementById('subtitle').innerHTML = all + '<br>' + tmp[0].transcript
+				}
+			}
+			reco.start()
+		} else {
+			document.getElementById('subtitle').innerHTML = "找不到辨識系統，請使用 Google Chrome 53+";
+		}
+	</script>
+</body>
+</html>
