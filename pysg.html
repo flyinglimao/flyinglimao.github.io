@@ -32,7 +32,7 @@
 			document.querySelector('#warning').innerHTML = '登入中...';
 			firebase.auth().signInWithEmailAndPassword(mail, pass)
 			.then( () => {
-				document.querySelector('#warning').value = '';
+				document.querySelector('#warning').innerHTML = '';
 				document.querySelector('#login').style.display = 'none';
 				document.querySelector('#new').style.display = 'block';
 			})
@@ -46,10 +46,12 @@
 			firebase.database().ref('/pysg/'+_from).once('value').then( s => {
 				if (s.val())
 					document.querySelector('#warning').innerHTML = '目標已存在！';
+					document.querySelector('#info').innerHTML = '';
 				else {
 					firebase.database().ref('/pysg/'+_from).set(to);
 					document.querySelector('#from').value = '';
 					document.querySelector('#to').value = '';
+					document.querySelector('#warning').innerHTML = '';
 					document.querySelector('#info').innerHTML = '建立成功';
 				}
 			})
