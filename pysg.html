@@ -44,10 +44,10 @@
 			let _from = document.querySelector('#from').value;
 			let to = document.querySelector('#to').value;
 			firebase.database().ref('/pysg/'+_from).once('value').then( s => {
-				if (s.val())
+				if (s.val()) {
 					document.querySelector('#warning').innerHTML = '目標已存在！';
 					document.querySelector('#info').innerHTML = '';
-				else {
+				} else {
 					firebase.database().ref('/pysg/'+_from).set(to);
 					document.querySelector('#from').value = '';
 					document.querySelector('#to').value = '';
