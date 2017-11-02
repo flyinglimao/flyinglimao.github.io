@@ -46,8 +46,12 @@
 			firebase.database().ref('/pysg/'+_from).once('value').then( s => {
 				if (s.val())
 					document.querySelector('#warning').value = '目標已存在！';
-				else
+				else {
 					firebase.database().ref('/pysg/'+_from).set(to);
+					document.querySelector('#from').value = '';
+					document.querySelector('#to').value = '';
+					document.querySelector('#info').value = '建立成功';
+				}
 			})
 		}
 	</script>
@@ -61,7 +65,7 @@
 	</form>
 	<form id="new" style="display: none">
 		<label for="from">從 /#</label>
-		<input type="text" name="from" id="fron">
+		<input type="text" name="from" id="from">
 		<label for="to">轉到</label>
 		<input type="text" name="to" id="to"><br>
 		<button type="button" onclick="newtra()">建立</button>
