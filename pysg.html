@@ -29,7 +29,7 @@
 		function authing () {
 			let mail = document.querySelector('#mail').value;
 			let pass = document.querySelector('#pass').value;
-			document.querySelector('#warning').value = '登入中...';
+			document.querySelector('#warning').innerHTML = '登入中...';
 			firebase.auth().signInWithEmailAndPassword(mail, pass)
 			.then( () => {
 				document.querySelector('#warning').value = '';
@@ -37,7 +37,7 @@
 				document.querySelector('#new').style.display = 'block';
 			})
 			.catch( (error) => {
-			    document.querySelector('#warning').value = '登入失敗';
+			    document.querySelector('#warning').innerHTML = '登入失敗';
 			});
 		}
 		function newtra() {
@@ -45,12 +45,12 @@
 			let to = document.querySelector('#to').value;
 			firebase.database().ref('/pysg/'+_from).once('value').then( s => {
 				if (s.val())
-					document.querySelector('#warning').value = '目標已存在！';
+					document.querySelector('#warning').innerHTML = '目標已存在！';
 				else {
 					firebase.database().ref('/pysg/'+_from).set(to);
 					document.querySelector('#from').value = '';
 					document.querySelector('#to').value = '';
-					document.querySelector('#info').value = '建立成功';
+					document.querySelector('#info').innerHTML = '建立成功';
 				}
 			})
 		}
