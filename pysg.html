@@ -3,16 +3,75 @@
 <head>
 	<meta charset="UTF-8">
 	<title>迷轉址</title>
+	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
 	<script>
-		let fromAndGo = {
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyDUY0DhlhTsIsQMw5llWLD3Quxec7cshZ8",
+		authDomain: "mysitetrans.firebaseapp.com",
+		databaseURL: "https://mysitetrans.firebaseio.com",
+		projectId: "mysitetrans",
+		storageBucket: "mysitetrans.appspot.com",
+		messagingSenderId: "969676326746"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+	<script>
+		var fromAndGo = {
 			"ex0": "https://learnpythonthehardway.org/python3/ex0.html"
 		}
-		if (fromAndGo[location.hash.slice(1)]) {
-			location.href = fromAndGo[location.hash.slice(1)];
+		firebase.database().ref('/pysg').once('value').then(s => {
+			fromAndGo = s.val();
+			if (fromAndGo[location.hash.slice(1)]) {
+				location.href = fromAndGo[location.hash.slice(1)];
+			}
+		});
+		function authing () {
+			let mail = document.querySelector('#mail').value;
+			let pass = document.querySelector('#pass').value;
+			document.querySelector('#warning').value = '登入中...';
+			firebase.auth().signInWithEmailAndPassword(mail, pass)
+			.then( () => {
+				document.querySelector('#warning').value = '';
+				document.querySelector('#login').style.display = 'none';
+				document.querySelector('#new').style.display = 'block';
+			})
+			.catch( (error) => {
+			    document.querySelector('#warning').value = '登入失敗';
+			});
+		}
+		function newtra() {
+			let _from = document.querySelector('#from').value;
+			let to = document.querySelector('#to').value;
+			if (firebase.database().ref('/pysg/'+_from).once('value').then( s => {
+				if (s.val())
+					document.querySelector('#warning').value = '目標已存在！';
+				else
+					firebase.database().ref('/pysg/'+_from).set(to);
+			})
 		}
 	</script>
 </head>
-<body>
-	You shouldn't see this page. If you see this, you have a wrong url.
+<body style="display: none">
+	<h1>Admin Page</h1>
+	<form id="login">
+		<label for="mail">Account</label><input type="text" name="mail" id="mail"><br>
+		<label for="pass">Password</label><input type="password" name="pass" id="pass"><br>
+		<button type="button" onclick="authing()">登入</button>
+	</form>
+	<form id="new" style="display: none">
+		<label for="from">從 /#</label>
+		<input type="text" name="from" id="fron">
+		<label for="to">轉到</label>
+		<input type="text" name="to" id="to"><br>
+		<button type="button" onclick="newtra()">建立</button>
+	</form>
+	<p style="color: red; font-weight: bold;" id="warning"></p>
+	<p style="color: green; font-weight: bold;" id="info"></p>
 </body>
+<script>
+	if (!location.hash) {
+		document.body.style.display = 'block';
+	}
+</script>
 </html>
