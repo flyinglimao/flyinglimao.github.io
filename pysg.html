@@ -43,7 +43,7 @@
 		function newtra() {
 			let _from = document.querySelector('#from').value;
 			let to = document.querySelector('#to').value;
-			if (firebase.database().ref('/pysg/'+_from).once('value').then( s => {
+			firebase.database().ref('/pysg/'+_from).once('value').then( s => {
 				if (s.val())
 					document.querySelector('#warning').value = '目標已存在！';
 				else
