@@ -17,15 +17,19 @@
 	  firebase.initializeApp(config);
 	</script>
 	<script>
+		onpopstate = () => {
+			firebase.database().ref('/pysg').once('value').then(s => {
+				fromAndGo = s.val();
+				if (fromAndGo[location.hash.slice(1)]) {
+					location.href = fromAndGo[location.hash.slice(1)];
+				}
+			});
+		}
+		onpopstate();
 		var fromAndGo = {
 			"ex0": "https://learnpythonthehardway.org/python3/ex0.html"
 		}
-		firebase.database().ref('/pysg').once('value').then(s => {
-			fromAndGo = s.val();
-			if (fromAndGo[location.hash.slice(1)]) {
-				location.href = fromAndGo[location.hash.slice(1)];
-			}
-		});
+		
 		function authing () {
 			let mail = document.querySelector('#mail').value;
 			let pass = document.querySelector('#pass').value;
