@@ -1,9 +1,9 @@
 let final = true
 let factor = []
-$$('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(4)').forEach( e => factor.push(+e.textContent))
+document.querySelectorAll('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(4)').forEach( e => factor.push(+e.textContent))
 let score = []
 let total = 0
-$$('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(5)').forEach( (e, idx) => {
+document.querySelectorAll('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(5)').forEach( (e, idx) => {
 	switch(e.textContent) {
 		case '尚未確認':
 			final = false
