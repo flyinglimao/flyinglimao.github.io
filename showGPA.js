@@ -48,4 +48,4 @@ document.querySelectorAll('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(5)').fo
 })
 let newRow = document.createElement('tr')
 newRow.innerHTML = `<td><font color="#330099">GPA</font></td><td><font color="#330099">${final?'確認':'未確認'}</font></td><td><font color="#330099">${(total/factor.reduce( (a, b) => a + b, 0)).toFixed(2)}</font></td><td><font color="#330099"></font></td><td><font color="#330099"></font></td><td><font color="#330099">&nbsp;</font></td><td><font color="#330099"></font></td>`
-$$('#Datagrid4')[0].appendChild(newRow)
+document.querySelectorAll('#Datagrid4')[0].appendChild(newRow)
