@@ -10,6 +10,8 @@ document.querySelectorAll('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(5)').fo
 			score.push(3)
 			break
 		case 'A+':
+			score.push(4.3)
+			break
 		case 'A ':
 			score.push(4)
 			break
