@@ -39,7 +39,6 @@
 		}
 		setInterval(()=>{
 			let date = new Date()
-			date.setHours(date.getHours() + 8)
 			document.querySelector('h1').innerHTML = `${date.getHours()}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
 		}, 1000)
 		if (location.hash === '#dark') {
