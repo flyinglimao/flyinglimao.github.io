@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Focus Please</title>
+	<style>
+		body.dark {
+			background: #000;
+		}
+		
+		body.dark h1 {
+			color: white;
+		}
+		
+		html, body{
+			width: 100%;
+			height: 100%;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			text-align: center;
+		}
+		
+		h1 {
+			position: relative;
+			margin: 0 auto;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 85vw;
+			font-size: 8em;
+		}
+	</style>
+</head>
+<body>
+	<h1>Loading</h1>
+	<script>
+		function pad (a) {
+			if (a > 9) return ''+a
+			else return '0'+a
+		}
+		setInterval(()=>{
+			let date = new Date()
+			date.setHours(date.getHours() + 8)
+			document.querySelector('h1').innerHTML = `${date.getHours()}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+		}, 1000)
+		if (location.hash === '#dark') {
+			document.body.setAttribute('class', 'dark')
+		}
+	</script>
+</body>
+</html>
