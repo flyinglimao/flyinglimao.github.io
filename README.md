@@ -12,4 +12,5 @@
 
 showGPA
 ---
-[把我新增到書籤](javascript:let a = document.createElement('script'); a.setAttribute('src', '//limaois.me/showGPA.js'); document.body.appendChild(a);)
+    javascript:let a = document.createElement('script'); a.setAttribute('src', '//limaois.me/showGPA.js'); document.body.appendChild(a);
+
