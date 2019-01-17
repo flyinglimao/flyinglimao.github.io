@@ -7,6 +7,7 @@ let total = 0
 document.querySelectorAll('#Datagrid4 tr:nth-child(n + 2) > td:nth-child(5)').forEach( (e, idx) => {
 	switch(e.textContent) {
 		case '尚未確認':
+		case '二次退選':
 			final = false
 			score.push(3)
 			break
