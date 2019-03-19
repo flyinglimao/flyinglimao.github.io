@@ -13,7 +13,7 @@
         })
       })
 
-      function sendToServer (message, callback) {
+      function sendToServer (message, token, callback) {
           miniXhr('https://script.google.com/macros/s/AKfycbxELVkEoC1SAPMpgY0ntfHtvkovqczTOi-nwsndugXCDXYl754/exec?token=' +
             token + '&message=' + message,
             {}
@@ -22,7 +22,7 @@
 
       function submit () {
         let message = document.getElementById('message').value
-      sendToServer(message, data => {
+        sendToServer(message, token, data => {
         data = JSON.parse(data)
         if (data.success) {
           document.getElementById('result').innerHTML = '成功'
