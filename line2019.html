@@ -9,13 +9,14 @@
 
       grecaptcha.ready(function() {
         grecaptcha.execute('6Lfea5gUAAAAADdnRdYvVvmepu8reiaW51GuEhGD', {action: 'LIME'}).then(function(t) {
-        token = t
-      })
+          token = t
+        })
       })
 
       function sendToServer (message, callback) {
-          miniXhr('https://script.google.com/macros/s/AKfycbxELVkEoC1SAPMpgY0ntfHtvkovqczTOi-nwsndugXCDXYl754/exec', {
-              data: { token, message }
+          miniXhr('https://script.google.com/macros/s/AKfycbxELVkEoC1SAPMpgY0ntfHtvkovqczTOi-nwsndugXCDXYl754/exec?token=' +
+            token + '&message=' + message,
+            {}
           }).then(callback)
       }
 
@@ -34,7 +35,7 @@
   </head>
   <body>
     <input type="text" id="message">
-    <button type="button" onclick="submit">送出</button>
+    <button type="button" onclick="submit()">送出</button>
     <div id="result"></div>
   </body>
 </html>
