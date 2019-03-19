@@ -1,8 +1,40 @@
-<script src="https://www.google.com/recaptcha/api.js?render=6Lfea5gUAAAAADdnRdYvVvmepu8reiaW51GuEhGD"></script>
-  <script>
-  grecaptcha.ready(function() {
-      grecaptcha.execute('6Lfea5gUAAAAADdnRdYvVvmepu8reiaW51GuEhGD', {action: 'homepage'}).then(function(token) {
-         console.log(token)
-      });
-  });
-  </script>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lfea5gUAAAAADdnRdYvVvmepu8reiaW51GuEhGD"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mini-xhr@0/build/miniXhr.js"></script>
+    <script>
+      let token
+
+      grecaptcha.ready(function() {
+        grecaptcha.execute('6Lfea5gUAAAAADdnRdYvVvmepu8reiaW51GuEhGD', {action: 'LIME'}).then(function(t) {
+        token = t
+      })
+      })
+
+      function sendToServer (message, callback) {
+          miniXhr('https://script.google.com/macros/s/AKfycbxELVkEoC1SAPMpgY0ntfHtvkovqczTOi-nwsndugXCDXYl754/exec', {
+              data: { token, message }
+          }).then(callback)
+      }
+
+      function submit () {
+        let message = document.getElementById('message').value
+      sendToServer(message, data => {
+        data = JSON.parse(data)
+        if (data.success) {
+          document.getElementById('result').innerHTML = '成功'
+        } else {
+          document.getElementById('result').innerHTML = '失敗：' + data.error
+        }
+      })
+      }
+    </script>
+  </head>
+  <body>
+    <input type="text" id="message">
+    <button type="button" onclick="submit">送出</button>
+    <div id="result"></div>
+  </body>
+</html>
