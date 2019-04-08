@@ -139,7 +139,7 @@
                 out = displayRandomName()
                 $('end').innerHTML += '<p>抽出' + out +'</p>'
                 doing = false
-                document.body.className = 'hightlight'
+                setTimeout(() => {document.body.className = 'hightlight'}, 300)
             }, 4600)
         }
 
