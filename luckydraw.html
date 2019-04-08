@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>狸貓的抽獎箱</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+        }
+
+        body > div {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            text-align: center;
+        }
+
+        #data {
+            display: block;
+            width: 24em;
+            height: 30em;
+            resize: none;
+            border-radius: 18px;
+            border: none;
+            background: #eee;
+            padding: 0.8em;
+        }
+
+        button {
+            font-size: 1.3em;
+            padding: 0.4em 1.2em;
+            border-radius: 999px;
+            border: none;
+            margin-top: 1.2em;
+            background: #36f;
+            color: white;
+        }
+
+        button.reverse {
+            color: #36f;
+            border: #36f solid 2px;
+            background: white;
+            text-shadow: none;
+        }
+
+        #input {
+            display: block;
+        }
+
+        #result h1{
+            font-size: 8em;
+        }
+
+        #end {
+            font-size: 2.4em;
+        }
+
+        p {
+            margin-top: 8px;
+        }
+        a {
+            color: gray;
+            text-decoration: none;
+        }
+        
+        .firworks{  
+            width: 6px;  
+            height: 6px;  
+            position: absolute;  
+        }  
+
+        @keyframes winner-highlight {
+            from {background-color: yellow;}
+            to {background-color: white;}
+        }
+        .hightlight {
+            animation-name: winner-highlight;
+            animation-duration: 2s;
+        }
+    </style>
+    <script>
+        let data
+        let doing = false
+        let $ = (e) => document.getElementById(e)
+        function start () {
+            data = $('data').value.split('\n')
+            $('input').style.display = 'none'
+            $('result').style.display = 'block'
+            redraw()
+        }
+
+        function getRandomName () {
+            return data[Math.floor(Math.random() * data.length)]
+        }
+
+        function displayRandomName () {
+            return $('winner').innerHTML = getRandomName()
+        }
+
+        function next () {
+            if (doing) return 0
+            if ($('winner').innerHTML.length) {
+                data.splice(data.indexOf($('winner').innerHTML), 1)
+                redraw()
+            } else end ()
+        }
+
+        function redraw () {
+            if (doing) return 0
+            document.body.className = ''
+            if(redraw.caller !== start && redraw.caller !== next)
+                $('end').innerHTML += '<p>重抽</p>'
+            doing = true
+            for (i = 0; i < 10; i++) setTimeout(displayRandomName, 50 * i)
+            for (i = 0; i < 10; i++) setTimeout(displayRandomName, 600 + 100 * i)
+            for (i = 0; i < 7; i++) setTimeout(displayRandomName, 1650 + 150 * i)
+            setTimeout(displayRandomName, 2800)
+            setTimeout(displayRandomName, 3100)
+            setTimeout(displayRandomName, 3600)
+            setTimeout(displayRandomName, 4000)
+            let out
+            setTimeout(() => { 
+                out = displayRandomName()
+                $('end').innerHTML += '<p>抽出' + out +'</p>'
+                doing = false
+                document.body.className = 'hightlight'
+            }, 4600)
+        }
+
+        function end () {
+            if (doing) setTimeout(end, 1000)
+            $('result').style.display = 'none'
+            $('end').style.display = 'block'
+        }
+    </script>
+</head>
+<body>
+    <div id="input">
+        <textarea id="data" placeholder="每行一個"></textarea>
+        <button onclick="start()">開抽</button>
+    </div>
+    <div id="result">
+        <h1 id="winner"></h1>
+        <button title="會移除這次得獎者" onclick="next()">下一個</button> <button class="reverse" title="不會移除本次得獎者" onclick="redraw()">重抽</button>
+        <p><a href="#" onclick="end()">結束</a></p>
+    </div>
+    <div id="end">
+    </div>
+</body>
+</html>
