@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Copy Cat</title>
+</head>
+
+<body onload="fetcher('','')">
+    Start?<br>
+    <noscript>
+        Failed
+    </noscript>
+</body>
+<script>
+    function fetcher(src, dest) {
+        fetch(`https://script.google.com/macros/s/AKfycbxLLZ3_gh24oOl1r-I0gOoliZVebJa6Hn7j8BJEAK-CeTTF49_8/exec?src=${src}&dest=${dest}`)
+            .then(e => e.json())
+            .then(data => {
+                console.log(data)
+                data.forEach(d => {
+                    document.body.innerHTML += `Fetch: ${d.src} to ${d.dest}<br>`
+                    fetcher(d.src, d.dest)
+                })
+            })
+    }
+</script>
+
+</html>
