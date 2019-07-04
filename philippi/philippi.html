@@ -34,28 +34,37 @@
 	.snuff{
 		display: inline;
 	}
-	.content:hover .normal, .content:active .normal{
+	.content.show .normal{
 		display: inline;
 	}
-	.content:hover .snuff, .content:active .snuff{
+	.content.show .snuff{
 		display: none;
+	}
+	.mode-btn {
+		position: fixed;
+		bottom: 8px;
+		right: 8px;
 	}
     </style>
 </head>
 
 <body>
 <div id="app">
-		<template v-for="ct in content">
-			<template v-for="ol in getOutline(ct.section_code, ct.segment_code)">
-				<h2 v-if="ol['level'] === 1">{{ ol.content }}</h2>
-				<h3 v-if="ol['level'] === 2">{{ ol.content }}</h3>
-			</template>
-			<div class="content">
-				<span style="width: 2.5em; display: inline-block;">{{ ct.section_code + ':' + ct.segment_code }}</span>
-				<span class="normal">{{ ct.content }}</span>
-				<span class="snuff">{{ snuff(ct.content) }}</span>
-			</div>
+	<div class="mode-btn">
+		<button @click="snuffMode = !snuffMode">切換模式</button>
+	</div>
+	<template v-for="ct in content">
+		<template v-for="ol in getOutline(ct.section_code, ct.segment_code)">
+			<h2 v-if="ol['level'] === 1">{{ ol.content }}</h2>
+			<h3 v-if="ol['level'] === 2">{{ ol.content }}</h3>
 		</template>
+		<div class="content" onclick="this.classList.toggle('show')">
+			<span style="width: 2.5em; display: inline-block;">{{ ct.section_code + ':' + ct.segment_code }}</span>
+			<span class="normal">{{ ct.content }}</span>
+			<span class="snuff" v-if="snuffMode">{{ snuff(ct.content) }}</span>
+			<span class="snuff" v-else>{{ ct.content.substr(0, 2) }}</span>
+		</div>
+	</template>
 </div>
 <script>
     const vm = new Vue({
@@ -64,7 +73,7 @@
             outline: [],
             content: [],
             outlineIndex: 0,
-            
+			snuffMode: 1,
         },
         created: function() {
             this.$http.get('./outline.json')
