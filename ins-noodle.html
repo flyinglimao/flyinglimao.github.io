@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>吃泡麵囉</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        #count {
+            font-size: 20vw;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            text-align: center;
+        }
+    </style>
+    <script>
+        let count = 179, itv
+        function d () {
+            document.getElementById('count').innerHTML = count
+            count --
+            if (count === 0) {
+                clearInterval(itv)
+                document.getElementById('count').innerHTML = 'Time Out!!'
+                alert('Time Out!')
+            }
+        }
+        setInterval(d, 1000)
+    </script>
+</head>
+<body>
+    <div id="count">180</div>
+</body>
+</html>
