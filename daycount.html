@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        h1 {
+            font-size: 8em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Loading</h1>
+    <script>
+        const cnt = document.querySelector('h1')
+        const tg = new Date('2021-02-01')
+
+        if (location.search) {
+            document.body.style.background = 'black'
+            cnt.style.color = 'white'
+        }
+
+        function r() {
+            const rm = tg - new Date()
+            const rm_s = rm / 1000
+            const d = Math.floor(rm_s / 86400)
+            const h = Math.floor((rm_s % 86400) / 3600)
+            const m = Math.floor(rm_s % 86400 % 3600 / 60)  
+            const s = rm_s % 86400 % 3600 % 60
+            
+            cnt.innerHTML = (d ? `${d} days <br>` : '')
+                                + (h ? `00${h}:`.substr(-3) : '')
+                                + (m ? `00${m}:`.substr(-3) : '')
+                                + ('00' + s.toFixed(2)).substr(-5)
+            setTimeout(r, 1)
+        }
+        r()
+    </script>
+</body>
+</html>
