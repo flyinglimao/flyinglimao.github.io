@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FakeUSDT Getter</title>
+</head>
+<body>
+<div id="app">
+Contract Addr: {{ contractAddr }}<br>
+Your Addr: {{ addr }}<br>
+Approve: Addr: <input type="text" v-model="approveAddr"> Allowance: <input type="text" v-model="approveNum"><button @click="approve(approveAddr, approveNum).send()">發送</button><br />
+Faucet: <input type="text" v-model="faucet_"><button @click="faucet(faucet_).send()">發送</button><br />
+Reset: <button @click="reset().send()">發送</button><br />
+Set: <input type="text" v-model="set_"><button @click="set(set_).send()">發送</button><br />
+Transfer: Addr: <input type="text" v-model="transferAddr"> Amount: <input type="text" v-model="transferNum"><button @click="transfer(transferAddr, transferNum).send()">發送</button><br />
+TransferFrom: From: <input type="text" v-model="transferFromAddr"> To: <input type="text" v-model="transferToAddr"> Allowance: <input type="text" v-model="transferNum2"><button @click="transferFrom(transferFromAddr, transferToAddr, transferNum2).send()">發送</button><br />
+Allowance: From: <input type="text" v-model="allowanceAddr"> Spender: <input type="text" v-model="allowanceSpender"><button @click="allowance(allowanceAddr, allowanceSpender).call().then(e => allowanceResult = e)">發送</button> {{ allowanceResult }}<br />
+BalanceOf: <input type="text" v-model="balanceOfAddr"><button @click="balanceOf(balanceOfAddr).call().then(e => balance = e)">發送</button> {{ balance }}<br />
+<a href="javascript:openABI()">ABI</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script>
+        (async (window) => {
+            window.web3 = new Web3(web3.currentProvider)
+            window.abi = [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_owner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_spender",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Approval",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_from",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "_to",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Transfer",
+            "type": "event"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_spender",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "approve",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "success",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "faucet",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [],
+            "name": "reset",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "set",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transfer",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "success",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_from",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transferFrom",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "success",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_initialSupply",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "allowance",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "balanceOf",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "name",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "totalSupply",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]
+	    let contractAddr
+	    if (await web3.eth.net.getId() === 42) contractAddr = '0x28047845001D028A040757678Ba4798e4762870F'
+	    else contractAddr = '0x2b8d142c1325C3e72fc22D8949F63f65b699c0e3'
+            window.vm = new Vue({
+                el: '#app',
+                data: {
+                    addr: await window.web3.eth.getCoinbase(),
+                    approveAddr: '',
+                    approveNum: 0,
+                    faucet_: 0,
+                    set_: 0,
+                    transferAddr: '',
+                    transferNum: 0,
+                    transferFromAddr: '',
+                    transferToAddr: '',
+                    transferNum2: 0,
+                    allowanceAddr: '',
+                    allowanceSpender: '',
+                    balanceOfAddr: '',
+                    allowanceResult: 0,
+                    balance: 0,
+		    contractAddr
+                },
+                methods: new web3.eth.Contract(abi, contractAddr, {from: await window.web3.eth.getCoinbase()}).methods
+            })
+        })(window)
+
+        function openABI () {
+            open('data:text/plain;charset=utf-8,' + JSON.stringify(window.abi))
+        }
+    </script>
+</body>
+</html>
