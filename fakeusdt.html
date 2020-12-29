@@ -23,6 +23,7 @@ BalanceOf: <input type="text" v-model="balanceOfAddr"><button @click="balanceOf(
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 <script>
         (async (window) => {
+		try { await ethereum.enable() } catch (_) {}
             window.web3 = new Web3(web3.currentProvider)
             window.abi = [
         {
