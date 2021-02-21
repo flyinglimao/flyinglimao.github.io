@@ -25,16 +25,22 @@
             border-radius: 8px;
             padding: 1em;
         }
-        image {
-            max-width: 100%;
-            max-height: 400px;
+        .card-image {
+            margin-bottom: .25em;
+            margin-top: .25em;
+        }
+        img {
+            max-width: calc(100% + 2em);
+            max-height: 600px;
+            margin-left: -1em;
+            margin-right: -1em;
         }
     </style>
 </head>
 <body>
     <div id="app">
         <div class="card" v-if="name">
-            <div class="card-title">{{ name }}</div>
+            <h2 class="card-name">{{ name }}</h2>
             <div class="card-image" v-if="image"><img :src="image"></div>
             <div class="card-description">{{ description }}</div>
             <div class="card-link" v-if="link"><a :href="link">{{ link }}</a></div>
