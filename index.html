@@ -2,28 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Flyinglimao's Website</title>
-    <script>
-        colorSet = ['red', 'lightblue', 'green', 'blue', 'pink', 'darkblue', 'yellow', 'purple', 'orange', 'darkred'];
-        var i = 0;
-        var q = 201;
-        setInterval(()=>{
-            document.querySelector('#colorful').style.color = colorSet[i++];
-            if(i > 10) {
-                i = 0;
-                document.querySelector('h1').style.fontSize = q++ + '%';
-            }
-        }, 100);
-    </script>
+    <title>Token Shower</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        html, body, #app {
+            height: 100%;
+            width: 100%;
+        }
+        #app {
+            display: grid;
+            place-items: center;
+        }
+        .card {
+            width: 400px;
+            border: 1px solid black;
+            border-radius: 8px;
+            padding: 1em;
+        }
+        image {
+            max-width: 100%;
+            max-height: 400px;
+        }
+    </style>
 </head>
 <body>
-    <h1>HELLO WORLD!</h1>
-    <p id="colorful">It's really a cool website, right?</p>
-    <p>Umm...</p>
-    <p>No, it isn't. :(</p>
-    <p>It just a stupid page, containing some useless text.</p>
-    <p>Who made this shitty thing? ...Oh, I did.</p>
+    <div id="app">
+        <div class="card" v-if="name">
+            <div class="card-title">{{ name }}</div>
+            <div class="card-image" v-if="image"><img :src="image"></div>
+            <div class="card-description">{{ description }}</div>
+            <div class="card-link" v-if="link"><a :href="link">{{ link }}</a></div>
+        </div>
+        <div class="card" v-else>
+            {{ error }}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                name: '',
+                image: '',
+                description: '',
+                link: '',
+                error: 'Go https://limaois.me/nft-shower.html?collection=<collection address>&token=<token id> to view NFT.',
+            },
+            mounted () {
+                if (!window.ethereum) return this.error = 'No Ethereum client was found, install MetaMask or any wallet first.'
+
+                const { address } = location.search.match(/collection=(?<address>[^&]*)/).groups
+                const { tokenId } = location.search.match(/token=(?<tokenId>[^&]*)/).groups
+                if (!address || !tokenId) return;
+                
+                const provider = new ethers.providers.Web3Provider(window.ethereum)
+                const contract = new ethers.Contract(address, ["function tokenURI(uint256 tokenId) view returns (string)"], provider)
+                contract.tokenURI(tokenId).then(url => axios.get(url, {crossDomain: true}))
+                .then(({data}) => {
+                    this.name = data.name
+                    this.image = data.image
+                    this.description = data.description
+                    this.link = data.external_url
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+            }
+        })
+    </script>
 </body>
 </html>
